@@ -1,21 +1,18 @@
-import '../server.dart';
+import 'package:server/rules/utils.dart';
 
-class Race { 
-  Race(this.name);
+class Race {
+  Race(this.id, this.name, abilityScore) {
+    abilityScoreIncrement.fromJson(abilityScore);
+  }
+
+  int id;
   String name;
-  Map abs = {'description':""};
-}
 
-List<Race> races = [];
+  AbilityScore abilityScoreIncrement = AbilityScore();
 
-Future<Response> createPlayer(Request request) async {
-  final String playerName = request.path.variables["playerName"]!;
-  final Race player = Race(playerName);
-
-  races.add(player);
-  return Response.ok(playerName);
-}
-
-Future<Response> getPlayers(Request request) async {
-  return Response.ok(races.map((p) => p.name).toList());
+  Map toJson() => {
+        'id': id,
+        'name': name,
+        'baseScore': abilityScoreIncrement.toJson(),
+      };
 }
